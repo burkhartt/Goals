@@ -1,0 +1,10 @@
+﻿@model Goals.Models.Goal
+
+@{
+    ViewBag.Title = "New Goal";
+}
+
+@using (Html.BeginForm("Create", "Goals", FormMethod.Post)) {
+    @Html.EditorForModel()
+    <input type="submit" value="Create" class="btn" />
+}
