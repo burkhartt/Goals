@@ -1,39 +1,46 @@
-﻿
+﻿using System.Reflection;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Filters;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
-using Goals.Controllers;
+using FluentValidation;
+using FluentValidation.Mvc;
+using Goals.Databases;
 using Goals.Filters;
 using Goals.Repositories;
-using Goals.SessionState;
+using Goals.Validation;
 using IActionFilter = System.Web.Mvc.IActionFilter;
 
-namespace Goals {    
-    public class MvcApplication : HttpApplication {        
+namespace Goals {
+    public class MvcApplication : HttpApplication {
         protected void Application_Start() {
-            
-
-
             var builder = new ContainerBuilder();
-            builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.RegisterControllers(typeof (MvcApplication).Assembly);
 
-            builder.Register(c => new Session(HttpContext.Current.Session)).As<ISession>();
-                
+            builder.RegisterType<Database>().As<IDatabase>();
+
             builder.RegisterType<ImportModelStateFromTempData>().As<IActionFilter>();
             builder.RegisterType<ExportModelStateToTempData>().As<IActionFilter>();
 
-            builder.RegisterType<ExtensibleActionInvoker>().As<IActionInvoker>();
-
-            builder.RegisterGeneric(typeof (SessionRepository<>)).As(typeof (IRepository<>));
+            builder.RegisterType<ExtensibleActionInvoker>().As<IActionInvoker>();            
+            builder.RegisterGeneric(typeof (DatabaseRepository<>)).As(typeof (IRepository<>));
             builder.RegisterFilterProvider();
+
+            builder.RegisterType<ModelValidatorFactory>().As<IValidatorFactory>();
+            var findValidatorsInAssembly = AssemblyScanner.FindValidatorsInAssembly(Assembly.GetExecutingAssembly());
+            foreach (var item in findValidatorsInAssembly) {
+                builder.RegisterType(item.ValidatorType).As(item.InterfaceType);
+            }
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
+            DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
+            ModelValidatorProviders.Providers.Add(
+                new FluentValidationModelValidatorProvider(container.Resolve<IValidatorFactory>()));
 
             AreaRegistration.RegisterAllAreas();
 

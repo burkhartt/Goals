@@ -1,10 +1,11 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Goals.Models {
     public abstract class Entity {
         protected Entity() {
-            Id = Guid.NewGuid();
+            if (Id == Guid.Empty) {
+                Id = Guid.NewGuid();
+            }
         }
 
         public Guid Id { get; private set; }

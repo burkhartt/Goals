@@ -29,7 +29,7 @@ namespace Goals.Controllers {
 
         [HttpGet]
         public ActionResult Update(Guid id) {
-            return View(repository.Get(id));
+            return View(repository.Read(id));
         }
 
         [HttpPost]

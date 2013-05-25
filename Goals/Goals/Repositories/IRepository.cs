@@ -7,7 +7,7 @@ namespace Goals.Repositories {
         void Create(T @object);
         IEnumerable<T> GetAll();
         void Update(T @object);
-        T Get(Guid id);
+        T Read(Guid id);
         void Delete(Guid id);
     }
 }
