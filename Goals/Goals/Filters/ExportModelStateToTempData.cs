@@ -2,16 +2,15 @@
 
 namespace Goals.Filters {
     public class ExportModelStateToTempData : ModelStateTempDataTransfer {
-        public override void OnActionExecuted(ActionExecutedContext filterContext) {
-            //Only export when ModelState is not valid
-            if (!filterContext.Controller.ViewData.ModelState.IsValid) {
-                //Export if we are redirecting
-                if ((filterContext.Result is RedirectResult) || (filterContext.Result is RedirectToRouteResult)) {
-                    filterContext.Controller.TempData[Key] = filterContext.Controller.ViewData.ModelState;
-                }
+        public override void OnActionExecuting(ActionExecutingContext filterContext) {
+            if (!filterContext.Controller.ViewData.ModelState.IsValid &&
+                filterContext.HttpContext.Request.RequestType == "POST") {
+                filterContext.Controller.TempData[Key] = filterContext.Controller.ViewData.ModelState;
+                filterContext.Result = new RedirectResult(filterContext.HttpContext.Request.UrlReferrer.AbsoluteUri);
+                return;
             }
 
-            base.OnActionExecuted(filterContext);
+            base.OnActionExecuting(filterContext);
         }
     }
 }

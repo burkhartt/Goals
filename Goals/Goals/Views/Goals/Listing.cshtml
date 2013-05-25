@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Goals.Models.Goal>
+
+@foreach (var goal in Model) {
+    <div class="row">
+        <div class="span9">
+            @goal.Title
+        </div>
+    </div>
+    <div class="row">
+        <div class="span9">
+            @goal.Description
+        </div>
+    </div>
+    <div class="row">
+        <div class="btn-group">
+            @Html.ActionLink("Edit", "Update", "Goals", new { id = @goal.Id }, new { @class = "btn btn-primary" })        
+            @Html.ActionLink("Delete", "Delete", "Goals", new { id = @goal.Id }, new { @class = "btn btn-danger" })
+        </div>
+    </div>    
+    <hr />
+}

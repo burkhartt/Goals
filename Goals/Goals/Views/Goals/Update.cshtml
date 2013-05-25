@@ -1,0 +1,6 @@
+﻿@model Goals.Models.Goal
+
+@using (Html.BeginForm("Update", "Goals", FormMethod.Post)) {
+    @Html.EditorForModel()
+    <input type="submit" value="Update" class="btn" />
+}

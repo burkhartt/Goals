@@ -165,6 +165,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HtmlHelpers.cs" />
+    <Compile Include="Metadata\FormInputAttribute.cs" />
+    <Compile Include="Metadata\MetadataProvider.cs" />
+    <Compile Include="Metadata\TextAreaAttribute.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Goal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -271,6 +274,9 @@
     <Content Include="Views\Shared\EditorTemplates\Guid.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Object.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\string.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Textarea.cshtml" />
+    <Content Include="Views\Goals\Listing.cshtml" />
+    <Content Include="Views\Goals\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

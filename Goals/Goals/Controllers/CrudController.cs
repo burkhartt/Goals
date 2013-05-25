@@ -19,7 +19,7 @@ namespace Goals.Controllers {
         [HttpPost]
         public ActionResult Create(T @object) {
             repository.Create(@object);
-            return RedirectToAction("Create");
+            return RedirectToAction("Listing");
         }
 
         [HttpGet]
@@ -35,7 +35,7 @@ namespace Goals.Controllers {
         [HttpPost]
         public ActionResult Update(T @object) {
             repository.Update(@object);
-            return RedirectToAction("Update");
+            return RedirectToAction("Listing");
         }
 
         [HttpGet]

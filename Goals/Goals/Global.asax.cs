@@ -10,6 +10,7 @@ using FluentValidation;
 using FluentValidation.Mvc;
 using Goals.Databases;
 using Goals.Filters;
+using Goals.Metadata;
 using Goals.Repositories;
 using Goals.Validation;
 using IActionFilter = System.Web.Mvc.IActionFilter;
@@ -38,6 +39,7 @@ namespace Goals {
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
+            ModelMetadataProviders.Current = new MetadataProvider();
             DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
             ModelValidatorProviders.Providers.Add(
                 new FluentValidationModelValidatorProvider(container.Resolve<IValidatorFactory>()));
